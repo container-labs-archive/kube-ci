@@ -1,0 +1,16 @@
+version: '2'
+
+services:
+  client:
+    build:
+      ./deploy-client
+
+  server:
+    build:
+      ./deploy-server
+    ports:
+      - "4567:4567"
+
+  image-pusher:
+    build:
+      ./image-pusher
