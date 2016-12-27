@@ -24,8 +24,9 @@ get '/deploy/:environment/:app/:image' do
 end
 
 # TODO: notify slack, hipchat
-post '/deploy/:environment/:app/:image' do
+post '/deploy/:environment/:app' do
   content_type :json
   deployer = Deployer.new
-  Oj.dump(deployer.process_request(params))
+  data = JSON.parse(request.body.read.to_s)
+  Oj.dump(deployer.process_request(params.merge(data)))
 end

@@ -13,13 +13,13 @@ class DeployClient
   end
 
   def deploy
-    html_encoded_image_path = CGI::escape("#{@registry_url}/#{@image_name}:#{@image_tag}")
+    image_path = "#{@registry_url}/#{@image_name}:#{@image_tag}"
 
-    path = "http://#{@deployer_ip}/deploy/#{@environment}/#{@app_name}/#{html_encoded_image_path}"
+    path = "http://#{@deployer_ip}/deploy/#{@environment}/#{@app_name}"
     auth = { username: @username, password: @password }
 
     STDERR.puts "POST: #{path}"
-    response = HTTParty.post(path, basic_auth: auth)
+    response = HTTParty.post(path, basic_auth: auth, body: { image_path: image_path }.to_json )
 
     STDERR.puts response
   end

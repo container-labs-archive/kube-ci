@@ -6,7 +6,7 @@ require_relative 'client'
 
 options = {
   environment: 'default',
-  deployer_ip: 'localhost:4567'
+  deployer_ip: 'server:4567'
 }
 OptionParser.new do |opts|
   opts.banner = 'Usage: docker-compose run kube-ci [options]'
@@ -27,7 +27,7 @@ OptionParser.new do |opts|
     options[:deployer_ip] = v
   end
 
-  opts.on('-e', '--environment', 'environment') do |v|
+  opts.on('-e', '--environment=REQUIRED', 'environment') do |v|
     options[:environment] = v
   end
 

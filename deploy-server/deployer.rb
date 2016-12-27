@@ -1,8 +1,8 @@
 class Deployer
   def process_request(request_params, dry_run = false)
-    app = params[:app]
-    environment = params[:environment]
-    image = CGI::unescape(params[:image])
+    app = request_params[:app]
+    environment = request_params[:environment]
+    image = request_params[:image_path]
 
     result = deploy_app(environment, app, image, dry_run).merge(dry_run: dry_run)
 
