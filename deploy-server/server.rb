@@ -8,9 +8,8 @@ require_relative 'deployer'
 Oj.default_options = { mode: :compat }
 set :bind, '0.0.0.0'
 
-# TODO: use vars
 use Rack::Auth::Basic, 'Must be authorized' do |username, password|
-  username == 'admin' and password == 'admin'
+  username == ENV['DEPLOY_USERNAME'] and password == ENV['DEPLOY_PASSWORD']
 end
 
 get '/' do
