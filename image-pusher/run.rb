@@ -13,16 +13,16 @@ OptionParser.new do |opts|
     options[:build_directory] = v
   end
 
-  opts.on('-i', '--image-tag=REQUIRED', 'Image name') do |v|
+  opts.on('-i', '--image-name=REQUIRED', 'Image name') do |v|
+    options[:image_name] = v
+  end
+
+  opts.on('-t', '--image-tag=REQUIRED', 'Image name') do |v|
     options[:image_tag] = v
   end
 
   opts.on('-r', '--registry-url=REQUIRED', 'Registry url') do |v|
     options[:registry_url] = v
-  end
-
-  opts.on('-n', '--image-name=REQUIRED', 'Image name') do |v|
-    options[:image_name] = v
   end
 end.parse!
 
