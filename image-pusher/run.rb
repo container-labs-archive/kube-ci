@@ -9,7 +9,7 @@ OptionParser.new do |opts|
 
   ##################
   # pusher options #
-  opts.on('-b', '--build-directory', 'Build directory') do |v|
+  opts.on('-b', '--build-directory=REQUIRED', 'Build directory') do |v|
     options[:build_directory] = v
   end
 
