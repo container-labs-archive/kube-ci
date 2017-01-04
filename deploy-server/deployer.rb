@@ -1,4 +1,12 @@
 class Deployer
+  def initialize
+    @client = SlackNotify::Client.new(
+      webhook_url: ENV['SLACK_WEBHOOK_URL'],
+      channel: "#in-app-marketing",
+      username: "kube-deploy"
+    )
+  end
+
   def process_request(request_params, dry_run = false)
     app = request_params[:app]
     environment = request_params[:environment]
@@ -49,6 +57,10 @@ class Deployer
     return metadata if dry_run
 
     response = patch_request(environment, app, metadata[:version])
+
+    if ENV['POST_TO_SLACK'] == 'true'
+      @client.notify("deployed #{app}:#{version} to #{environment}")
+    end
 
     metadata[:apiResponse] = response
     metadata

@@ -2,6 +2,7 @@ require 'httparty'
 require 'oj'
 require 'sinatra'
 require 'yaml'
+require 'slack-notify'
 
 require_relative 'deployer'
 

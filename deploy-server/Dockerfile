@@ -16,4 +16,7 @@ ENV KUBE_CLUSER_IP baz
 ENV DEPLOY_USERNAME admin
 ENV DEPLOY_PASSWORD admin
 
+ENV SLACK_WEBHOOK_URL http://biz.baz
+ENV POST_TO_SLACK false
+
 CMD ["bundle", "exec", "ruby", "server.rb"]
