@@ -59,7 +59,7 @@ class Deployer
     response = patch_request(environment, app, metadata[:version])
 
     if ENV['POST_TO_SLACK'] == 'true'
-      @client.notify("deployed #{app}:#{version} to #{environment}")
+      @client.notify("deployed version: #{version.split(":")[-1]} of #{app} to #{environment}")
     end
 
     metadata[:apiResponse] = response
