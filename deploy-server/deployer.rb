@@ -24,19 +24,33 @@ class Deployer
   private
 
   def patch_request(environment, app, new_image)
-    auth = { username: ENV['KUBE_CLUSTER_USERNAME'], password: ENV['KUBE_CLUSTER_PASSWORD'] }
+    auth = nil
     headers = {}
     headers['Content-Type'] = 'application/json-patch+json'
+
+    if ENV['SERVICE_ACCOUNT_TOKEN']
+      headers['Authorization'] = "Bearer #{ENV['SERVICE_ACCOUNT_TOKEN']}"
+    else
+      auth = { username: ENV['KUBE_CLUSTER_USERNAME'], password: ENV['KUBE_CLUSTER_PASSWORD'] }
+    end
+
     path = "https://#{ENV['KUBE_CLUSER_IP']}/apis/extensions/v1beta1/namespaces/#{environment}/deployments/#{app}"
     STDERR.puts "PATCH: #{path}"
 
     # TODO: add support for more than 1 container per deployment
     patch_body = [{ op: 'replace', path: '/spec/template/spec/containers/0/image',  value: new_image }]
     STDERR.puts "PATCH-BODY: #{patch_body}"
-    response = HTTParty.patch(path,
-                   body: Oj.dump(patch_body),
-                   headers: headers,
-                   basic_auth: auth)
+
+    if auth
+      response = HTTParty.patch(path,
+                     body: Oj.dump(patch_body),
+                     headers: headers,
+                     basic_auth: auth)
+    else
+      response = HTTParty.patch(path,
+                     body: Oj.dump(patch_body),
+                     headers: headers)
+    end
 
     response
   end
