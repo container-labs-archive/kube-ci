@@ -49,7 +49,9 @@ class Deployer
     else
       response = HTTParty.patch(path,
                      body: Oj.dump(patch_body),
-                     headers: headers)
+                     headers: headers,
+                     # don't verify SSL cert...
+                     verify: false)
     end
 
     response
