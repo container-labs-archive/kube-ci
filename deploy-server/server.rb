@@ -3,6 +3,9 @@ require 'oj'
 require 'sinatra'
 require 'yaml'
 require 'slack-notify'
+require 'elasticsearch'
+require 'time'
+require 'securerandom'
 
 require_relative 'deployer'
 

@@ -19,4 +19,8 @@ ENV DEPLOY_PASSWORD admin
 ENV SLACK_WEBHOOK_URL http://biz.baz
 ENV POST_TO_SLACK false
 
+ENV ES_LOG_DEPLOY false
+ENV ES_INDEX deploys
+ENV ES_CLIENT_URL foobar.com
+
 CMD ["bundle", "exec", "ruby", "server.rb"]

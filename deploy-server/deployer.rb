@@ -1,10 +1,14 @@
 class Deployer
   def initialize
-    @client = SlackNotify::Client.new(
+    @slack_client = SlackNotify::Client.new(
       webhook_url: ENV['SLACK_WEBHOOK_URL'],
       channel: "#in-app-marketing",
       username: "kube-deploy"
     )
+
+    if ENV['ES_CLIENT_URL']
+      @es_client = Elasticsearch::Client.new log: true, host: ENV['ES_CLIENT_URL']
+    end
   end
 
   def process_request(request_params, dry_run = false)
@@ -74,11 +78,18 @@ class Deployer
 
     response = patch_request(environment, app, metadata[:version])
 
+    version_sha = version.split(":")[-1]
+
     if ENV['POST_TO_SLACK'] == 'true'
-      @client.notify("deployed version: #{version.split(":")[-1]} of #{app} to #{environment}")
+      @slack_client.notify("deployed version: #{version_sha} of #{app} to #{environment}")
     end
 
-    metadata[:apiResponse] = response
+    if ENV['ES_LOG_DEPLOY'] == 'true'
+      @es_client.index  index: ENV['ES_INDEX'], type: 'deploy', id: SecureRandom.uuid, body: { '@timestamp' => Time.now.utc.to_i * 1000, tags: "deploy #{app} #{environment}", title: "#{app} deploy", text: "Deployed #{version_sha}" }
+    end
+
+    # TODO: this makes kibanna noisy, bring back later
+    # metadata[:apiResponse] = response
     metadata
   end
 end
