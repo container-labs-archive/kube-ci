@@ -90,6 +90,7 @@ class Deployer
 
     # TODO: this makes kibanna noisy, bring back later
     # metadata[:apiResponse] = response
+    STDERR.puts response
     metadata
   end
 end
