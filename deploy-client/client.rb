@@ -15,7 +15,7 @@ class DeployClient
   def deploy
     image_path = "#{@registry_url}/#{@image_name}:#{@image_tag}"
 
-    path = "http://#{@deployer_ip}/deploy/#{@environment}/#{@app_name}"
+    path = "https://#{@deployer_ip}/deploy/#{@environment}/#{@app_name}"
     auth = { username: @username, password: @password }
 
     STDERR.puts "POST: #{path}"

@@ -20,7 +20,7 @@ get '/' do
   'welcome to kube-deployer'
 end
 
-get '/deploy/:environment/:app/:image' do
+get '/deploy/:environment/:app' do
   content_type :json
   deployer = Deployer.new
   Oj.dump(deployer.process_request(params, true))
